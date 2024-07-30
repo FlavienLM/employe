@@ -1,0 +1,42 @@
+name: Frontend-CICD
+
+on:
+    push:
+        branches: [main]
+
+jobs:
+    build:
+        runs-on: [ubuntu-latest]
+        steps:
+            - name: Checkout source
+              uses: actions/checkout@v3
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '18'
+            - name: Install Dependencies
+              working-directory: ./frontend 
+              run: npm install
+            - name: Build Project
+              working-directory: ./frontend
+              run: npm run build
+            - name: Login to docker hub
+              run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+            - name: Build docker image
+              run: docker buildx build --platform linux/amd64 -t flavienlm/employe-frontend:test ./frontend
+            - name: Publish image to docker hub
+              run: docker push flavienlm/employe-frontend:test
+    deploy:
+        needs: build
+        runs-on: [self-hosted]
+        steps:
+          - name: Pull Image from focker hub
+            run: docker pull flavienlm/employe-frontend:test
+          - name: Delete old container
+            run: docker rm -f frontend-test
+          - name: 
+            run: docker run -d -p 90:80 --name frontend-test flavienlm/employe-frontend:test
+
+
+
+                
