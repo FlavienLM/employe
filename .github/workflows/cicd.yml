@@ -25,14 +25,14 @@ jobs:
               run: docker push flavienlm/employe-backend:test
     deploy:
         needs: build
-        runs-on: [ip-172-31-15-237]
+        runs-on: [self-hosted]
         steps:
           - name: Pull Image from focker hub
             run: docker pull flavienlm/employe-backend:test
           - name: Delete old container
             run: docker rm -f test
           - name: 
-            run: docker run -d -p 80:80 --name test flavienlm/employe-backend:enfin
+            run: docker run -d -p 80:80 --name test flavienlm/employe-backend:test
 
 
 
