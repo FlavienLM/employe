@@ -21,19 +21,19 @@ jobs:
             - name: Login to docker hub
               run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
             - name: Build docker image
-              run: docker buildx build --platform linux/amd64 -t flavienlm/employe-backend:test ./backend
+              run: docker buildx build --platform linux/amd64 -t flavienlm/employe-backend:1.0 ./backend
             - name: Publish image to docker hub
-              run: docker push flavienlm/employe-backend:test
+              run: docker push flavienlm/employe-backend:1.0
     deploy:
         needs: build
         runs-on: [self-hosted]
         steps:
           - name: Pull Image from focker hub
-            run: docker pull flavienlm/employe-backend:test
+            run: docker pull flavienlm/employe-backend:1.0
           - name: Delete old container
             run: docker rm -f test
           - name: 
-            run: docker run -d -p 80:8080 --name test flavienlm/employe-backend:test
+            run: docker run -d -p 80:8080 --name test flavienlm/employe-backend:1.0
 
 
 
