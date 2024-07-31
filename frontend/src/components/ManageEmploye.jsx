@@ -1,5 +1,5 @@
 // src/components/UpdateEmploye.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { createEmploye, getEmployeById, updateEmploye } from '../EmployeService';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -17,16 +17,17 @@ const ManageEmploye = () => {
 
     const id = location.state?.id ?? null;
 
+
+    const loadEmploye = useCallback(async () => {
+        const response = await getEmployeById(id);
+        setEmploye(response.data);
+    }, [id]);
+
     useEffect(() => {
         if(id != null){
             loadEmploye();
         }
-    }, []);
-
-    const loadEmploye = async () => {
-        const response = await getEmployeById(id);
-        setEmploye(response.data);
-    };
+    }, [id,loadEmploye]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
