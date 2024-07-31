@@ -1,8 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ListEmployes from './components/ListEmployes';
+import NewEmploye from './components/NewEmploye';
+import ManageEmploye from './components/ManageEmploye';
+import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+          <Route path="/" element={<ListEmployes />}></Route>
+          <Route path="list" element={<ListEmployes />} />
+          <Route path="/update" element={<ManageEmploye />} />
+          <Route path="/create" element={<NewEmploye />} />
+
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -11,7 +29,3 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
